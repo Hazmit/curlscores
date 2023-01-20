@@ -1,7 +1,5 @@
 import cv2
 import pytesseract
-import requests # to get image from the web
-import shutil # to save it locally
 import math
 import time
 from datetime import datetime
@@ -9,26 +7,21 @@ import array
 
 #define CV_RGB(r, g, b)
 
-# imagesFolder = "./"
-# cap = cv2.VideoCapture("rtsp://admin:admin1admin@192.168.227.231:554")
-# frameRate = cap.get(5) #frame rate
-# count = 0
-
-# while cap.isOpened():
-    # frameId = cap.get(1)  # current frame number
-    # ret, frame = cap.read()
-
-    # if (ret != True):
-        # break
-    # if (frameId % math.floor(frameRate) == 0):
-        # filename = imagesFolder + "/image_" + str(datetime.now().strftime("%d-%m-%Y_%I-%M-%S_%p"))  + ".jpg"
-        # filename = imagesFolder + "snapshot.jpg"
-        # cv2.imwrite(filename, frame)
-
-    # cap.release()
-    # print ("Snapshot retrieved.")
-
-# cv2.destroyAllWindows()
+# 
+# 0    Orientation and script detection (OSD) only.
+# 1    Automatic page segmentation with OSD.
+# 2    Automatic page segmentation, but no OSD, or OCR.
+# 3    Fully automatic page segmentation, but no OSD. (Default)
+# 4    Assume a single column of text of variable sizes.
+# 5    Assume a single uniform block of vertically aligned text.
+# 6    Assume a single uniform block of text.
+# 7    Treat the image as a single text line.
+# 8    Treat the image as a single word.
+# 9    Treat the image as a single word in a circle.
+# 10    Treat the image as a single character.
+# 11    Sparse text. Find as much text as possible in no particular order.
+# 12    Sparse text with OSD.
+# 13    Raw line. Treat the image as a single text line, bypassing hacks that are Tesseract-specific.
 
 # x=1600
 # y=390
@@ -77,9 +70,10 @@ for row in range(2):
         y=410+(row*65)
         w=x+40
         h=y+40
-    
+        
         start_point = (x, y)
         end_point = (w, h)
+
         if(i % 2) == 0:
             color = (255, 0, 0)
         else:
@@ -89,11 +83,12 @@ for row in range(2):
         
         # Using cv2.rectangle() method
         # Draw a rectangle with blue line borders of thickness of 2 px
-        disaply_image = cv2.rectangle(image, start_point, end_point, color, thickness)
+        display_image = cv2.rectangle(image, start_point, end_point, color, thickness)
     
         crop_image = image[y:h, x:w]
     
-        #grey_image = cv2.cvtColor(crop_image, cv2.COLOR_BGR2GRAY) # Apply dilation and erosion to remove some noise    kernel = np.ones((1, 1), np.uint8)    img = cv2.dilate(img, kernel, iterations=1)    img = cv2.erode(img, kernel, iterations=1)
+        #grey_image = cv2.cvtColor(crop_image, cv2.COLOR_BGR2GRAY) 
+        # Apply dilation and erosion to remove some noise    kernel = np.ones((1, 1), np.uint8)    img = cv2.dilate(img, kernel, iterations=1)    img = cv2.erode(img, kernel, iterations=1)
     
         # cv2.imshow("Grey", grey_image)
     
@@ -117,18 +112,3 @@ print("")
 cv2.imshow("Original", display_image)
 # cv2.imshow("Processed", crop_image)
 cv2.waitKey(0)
-
-# 0    Orientation and script detection (OSD) only.
-# 1    Automatic page segmentation with OSD.
-# 2    Automatic page segmentation, but no OSD, or OCR.
-# 3    Fully automatic page segmentation, but no OSD. (Default)
-# 4    Assume a single column of text of variable sizes.
-# 5    Assume a single uniform block of vertically aligned text.
-# 6    Assume a single uniform block of text.
-# 7    Treat the image as a single text line.
-# 8    Treat the image as a single word.
-# 9    Treat the image as a single word in a circle.
-# 10    Treat the image as a single character.
-# 11    Sparse text. Find as much text as possible in no particular order.
-# 12    Sparse text with OSD.
-# 13    Raw line. Treat the image as a single text line, bypassing hacks that are Tesseract-specific.
